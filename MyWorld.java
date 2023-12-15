@@ -13,11 +13,28 @@ public class MyWorld extends World
      * Constructor for objects of class MyWorld.
      * 
      */
+    SimpleTimer spawnTimer = new SimpleTimer();
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 400, 1);
-        enemy1 octopus = new enemy1();
-        addObject(octopus, 100, 100);
+        Player knight = new Player();
+        addObject(knight,200,300);
+    }
+    /**
+     * Spawns enemies from either side
+     */
+    public void sideSpawn(){
+        int x = Greenfoot.getRandomNumber(this.getWidth());
+        int y = 300;
+        Enemy1 enemy = new Enemy1(x);
+        addObject(enemy,x,y);
+    }
+    
+    public void act(){
+        if(spawnTimer.millisElapsed() > 3000){
+            sideSpawn();
+            spawnTimer.mark();
+        }
     }
 }
