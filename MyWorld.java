@@ -26,7 +26,7 @@ public class MyWorld extends World
      */
     public void sideSpawn(){
         int x = Greenfoot.getRandomNumber(this.getWidth());
-        int y = 300;
+        int y = 275;
         Enemy1 enemy = new Enemy1(x);
         addObject(enemy,x,y);
     }
