@@ -23,7 +23,7 @@ public class Player extends Actor
         for(int i = 0; i < idleLeft.length; i++){
             idleLeft[i] = new GreenfootImage("images/knightIdle/idle" + (i+1) + ".png");
             idleLeft[i].scale(150, 150);
-            idleRight[i].mirrorHorizontally();
+            idleLeft[i].mirrorHorizontally();
         }
         for(int i = 0; i < idleRight.length; i++){
             idleRight[i] = new GreenfootImage("images/knightIdle/idle" + (i+1) + ".png");
@@ -43,7 +43,7 @@ public class Player extends Actor
             facingRight = true;
             move(5);
         }
-        
+        animateKnight();
     }
     int imageIndex = 0;
     /**
