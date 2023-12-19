@@ -2,7 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
  * Write a description of class Player here.
- * 
+ * It is a knight which runs around killing the evil octopus
  * @author (your name) 
  * @version (a version number or a date)
  */
@@ -14,7 +14,10 @@ public class Player extends Actor
      */
     GreenfootImage[] idleLeft = new GreenfootImage[4];
     GreenfootImage[] idleRight = new GreenfootImage[4];
+    GreenfootImage[] runLeft = new GreenfootImage[4];
+    GreenfootImage[] runRight = new GreenfootImage[4];
     boolean facingRight = true;
+    boolean idle = true;
     SimpleTimer animationTimer = new SimpleTimer();
     /**
      * Makes a left and right facing knight depending on which way the player is facing.
@@ -24,10 +27,15 @@ public class Player extends Actor
             idleLeft[i] = new GreenfootImage("images/knightIdle/idle" + (i+1) + ".png");
             idleLeft[i].scale(150, 150);
             idleLeft[i].mirrorHorizontally();
-        }
-        for(int i = 0; i < idleRight.length; i++){
             idleRight[i] = new GreenfootImage("images/knightIdle/idle" + (i+1) + ".png");
             idleRight[i].scale(150, 150);
+        }
+        for(int i = 0; i < runLeft.length; i++){
+            runLeft[i] = new GreenfootImage("images/knightRun/run" + (i+1) + ".png");
+            runLeft[i].scale(150, 150);
+            runLeft[i].mirrorHorizontally();
+            runRight[i] = new GreenfootImage("images/knightRun/run" + (i+1) + ".png");
+            runRight[i].scale(150, 150);
         }
         animationTimer.mark();
         setImage(idleRight[1]);
@@ -35,13 +43,16 @@ public class Player extends Actor
     public void act()
     {
         // Add your action code here.
+        idle = false;
         if(Greenfoot.isKeyDown("a")){
             facingRight = false;
             move(-5);
         }
-        if(Greenfoot.isKeyDown("d")){
+         else if(Greenfoot.isKeyDown("d")){
             facingRight = true;
             move(5);
+        } else{
+            idle = true;
         }
         animateKnight();
     }
@@ -54,10 +65,18 @@ public class Player extends Actor
             return;
         }
         animationTimer.mark();
-        if(facingRight){
-            setImage(idleRight[imageIndex]);
-        } else{
-            setImage(idleLeft[imageIndex]);
+        if(idle){
+            if(facingRight){
+                setImage(idleRight[imageIndex]);
+            } else {
+                setImage(idleLeft[imageIndex]);
+            }
+        }else{
+            if(facingRight){
+                setImage(runRight[imageIndex]);
+            } else {
+                setImage(runLeft[imageIndex]);
+            }
         }
         imageIndex = (imageIndex + 1) % idleRight.length;
     }
