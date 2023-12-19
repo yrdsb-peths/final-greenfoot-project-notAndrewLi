@@ -1,4 +1,5 @@
 #Greenfoot project file
+<<<<<<< Updated upstream
 dependency1.from=MyWorld
 dependency1.to=SimpleTimer
 dependency1.type=UsesDependency
@@ -14,12 +15,31 @@ dependency4.type=UsesDependency
 dependency5.from=enemy1
 dependency5.to=MyWorld
 dependency5.type=UsesDependency
+=======
+dependency1.from=enemy1
+dependency1.to=SimpleTimer
+dependency1.type=UsesDependency
+dependency2.from=enemy1
+dependency2.to=MyWorld
+dependency2.type=UsesDependency
+dependency3.from=MyWorld
+dependency3.to=SimpleTimer
+dependency3.type=UsesDependency
+dependency4.from=MyWorld
+dependency4.to=Player
+dependency4.type=UsesDependency
+>>>>>>> Stashed changes
 editor.fx.0.height=739
 editor.fx.0.width=816
 editor.fx.0.x=210
 editor.fx.0.y=98
+<<<<<<< Updated upstream
 height=925
 package.numDependencies=5
+=======
+height=1056
+package.numDependencies=4
+>>>>>>> Stashed changes
 package.numTargets=5
 project.charset=windows-1252
 publish.hasSource=false
@@ -71,7 +91,14 @@ target5.width=120
 target5.x=0
 target5.y=0
 version=3.1.0
+<<<<<<< Updated upstream
 width=1381
 world.lastInstantiated=MyWorld
 xPosition=0
 yPosition=0
+=======
+width=1936
+world.lastInstantiated=MyWorld
+xPosition=-8
+yPosition=-8
+>>>>>>> Stashed changes
