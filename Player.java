@@ -43,7 +43,7 @@ public class Player extends Actor
             swingLeft[i].scale(150, 150);
         }
         animationTimer.mark();
-        setImage(idleRight[1]);
+        setImage(idleRight[0]);
     }
     public void act()
     {

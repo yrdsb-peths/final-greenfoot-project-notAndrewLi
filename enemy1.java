@@ -12,7 +12,8 @@ public class Enemy1 extends Actor
      * Act - do whatever the Enemy1 wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    GreenfootImage image = new GreenfootImage("images/Enemy1.png");
+    GreenfootImage[] octopus = new GreenfootImage[7];
+    GreenfootImage[] octopusFlip = new GreenfootImage[7];
     boolean movingRight = false;
     boolean facingRight = false;
     SimpleTimer bobbing = new SimpleTimer();
@@ -20,8 +21,16 @@ public class Enemy1 extends Actor
      * creates the enemy and assigns which direction to face and move
      */
     public Enemy1 (int x){
-        image.scale(100,100);
-        setImage(image);
+        //animation frames for the octopus
+        for (int i = 0; i < octopus.length; i++){
+            octopus[i] = new GreenfootImage("images/octopus/octopus_" + i + ".png");
+            octopus[i].scale(100,100);
+        }
+        for(int i = 0; i < octopusFlip.length; i++){
+            octopusFlip[i] = new GreenfootImage("images/octopus/octopus_" + i + ".png");
+            octopusFlip[i].mirrorHorizontally();
+            octopus[i].scale(100,100);
+        }
         if(x < 300){
             movingRight = true;
             facingRight = true;
@@ -29,33 +38,35 @@ public class Enemy1 extends Actor
             movingRight = false;
             facingRight = false;
         }
+        setImage(octopus[0]);
+        bobbing.mark();
     }
     /**
      * moves the octopus depending on which way it is facing
      */
-    boolean bobUp = true;
     public void act()
     {
         // Add your action code here.
-        if(bobbing.millisElapsed() > 500){
-            bobUp = !bobUp;
-            bobbing.mark();
-        }
         if(movingRight){
             move(1);
-            if(facingRight){
-                image.mirrorHorizontally();
-            }
-            facingRight = false;
         } else{
             move(-1);
         }
-        if(bobUp){
-            setLocation(getX(), getY()+1);
-        } else {
-            setLocation(getX(), getY()-1);
-        }
+        bob();
         despawn();
+    }
+    int imageIdx = 0;
+    public void bob(){
+        if(bobbing.millisElapsed() < 300){
+            return;
+        }
+        bobbing.mark();
+        if(facingRight){
+            setImage(octopusFlip[imageIdx]);
+        } else{
+            setImage(octopus[imageIdx]);
+        }
+        imageIdx = (imageIdx + 1) % octopus.length;
     }
     /**
      * if the octopus is out of bounds, delete it
