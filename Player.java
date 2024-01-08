@@ -22,9 +22,12 @@ public class Player extends Actor
     boolean idle = true;
     SimpleTimer animationTimer = new SimpleTimer();
     /**
-     * Makes a left and right facing knight depending on which way the player is facing.
+     * Makes a left and right facing knight and animations
+     * depending on which way the player is facing.
+     * running, idle, attacking
      */
     public Player (){
+        // set up all the animation arrays
         for(int i = 0; i < 4; i++){
             idleLeft[i] = new GreenfootImage("images/knightIdle/idle" + (i+1) + ".png");
             idleLeft[i].scale(150, 150);
@@ -45,29 +48,32 @@ public class Player extends Actor
         animationTimer.mark();
         setImage(idleRight[0]);
     }
+    SimpleTimer swingCD = new SimpleTimer();
     public void act()
     {
         // Add your action code here.
         idle = false;
-        if(Greenfoot.isKeyDown("a")){
-            facingRight = false;
-            move(-5);
-        }
-         else if(Greenfoot.isKeyDown("d")){
-            facingRight = true;
-            move(5);
-        }
+        int direction = 0;
+        if(Greenfoot.isKeyDown("a"))direction--;
+        else if(Greenfoot.isKeyDown("d"))direction++;
         else if(Greenfoot.mouseClicked(null)){
-            swingSword();
+            if(swingCD.millisElapsed() > 500){
+                swingCD.mark();
+                swingSword();
+            }
         }
         else{
             idle = true;
         }
+        move(direction * 5);
+        if(direction >= 0) facingRight = true;
+        else facingRight = false;
         animateKnight();
     }
     int imageIndex = 0;
     /**
-     * Animates the knight by setting the knight to a new image every 100 milliseconds
+     * Animates the knight by setting the actor to a new image every 
+     * 100 milliseconds
      */
     public void animateKnight(){
         if(animationTimer.millisElapsed() < 100){
@@ -89,18 +95,25 @@ public class Player extends Actor
         }
         imageIndex = (imageIndex + 1) % idleRight.length;
     }
-    public void swingSword(){
-        if(facingRight){
-            for(int i = 0; i < swingRight.length; i++){
-                setImage(swingRight[i]);
-                Greenfoot.delay(1);
-            }
-        } else{
-            for(int i = 0; i < swingLeft.length; i++){
-                setImage(swingLeft[i]);
-                Greenfoot.delay(1);
+    
+    /**
+     * The Player's animation to swing their sword, a different animation 
+     * plays depending on the direction the player is facing.
+     */
+    SimpleTimer attackTimer = new SimpleTimer();
+    private int currentFrame = 0;
+    private int animationSpeed = 75; // Adjust this value based on your desired animation speed
+    
+    public void swingSword() {
+        if (attackTimer.millisElapsed() > animationSpeed) {
+            attackTimer.mark();
+            if (facingRight) {
+                setImage(swingRight[currentFrame]);
+                currentFrame = (currentFrame + 1) % swingRight.length;
+            } else {
+                setImage(swingLeft[currentFrame]);
+                currentFrame = (currentFrame + 1) % swingLeft.length;
             }
         }
-        setImage(idleLeft[1]);
     }
 }

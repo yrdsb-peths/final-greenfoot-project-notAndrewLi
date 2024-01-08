@@ -25,11 +25,9 @@ public class Enemy1 extends Actor
         for (int i = 0; i < octopus.length; i++){
             octopus[i] = new GreenfootImage("images/octopus/octopus_" + i + ".png");
             octopus[i].scale(100,100);
-        }
-        for(int i = 0; i < octopusFlip.length; i++){
             octopusFlip[i] = new GreenfootImage("images/octopus/octopus_" + i + ".png");
             octopusFlip[i].mirrorHorizontally();
-            octopus[i].scale(100,100);
+            octopusFlip[i].scale(100,100);
         }
         if(x < 300){
             movingRight = true;
@@ -48,9 +46,9 @@ public class Enemy1 extends Actor
     {
         // Add your action code here.
         if(movingRight){
-            move(1);
+            move(3);
         } else{
-            move(-1);
+            move(-3);
         }
         bob();
         despawn();

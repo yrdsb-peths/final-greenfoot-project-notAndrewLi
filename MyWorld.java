@@ -17,7 +17,7 @@ public class MyWorld extends World
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1);
+        super(1000, 400, 1);
         Player knight = new Player();
         addObject(knight,200,300);
     }
@@ -32,7 +32,7 @@ public class MyWorld extends World
     }
     
     public void act(){
-        if(spawnTimer.millisElapsed() > 3000){
+        if(spawnTimer.millisElapsed() > 9000){
             sideSpawn();
             spawnTimer.mark();
         }
