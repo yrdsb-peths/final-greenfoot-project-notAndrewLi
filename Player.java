@@ -49,15 +49,31 @@ public class Player extends Actor
         setImage(idleRight[0]);
     }
     SimpleTimer swingCD = new SimpleTimer();
+    /**
+     * The loop that runs repeatedly while the game has started
+     */
     public void act()
     {
         // Add your action code here.
+        checkKeys();
+        animateKnight();
+    }
+    /**
+     * Checks which key has been pressed
+     */
+    public void checkKeys(){
         idle = false;
         int direction = 0;
-        if(Greenfoot.isKeyDown("a"))direction--;
-        else if(Greenfoot.isKeyDown("d"))direction++;
+        if(Greenfoot.isKeyDown("a")){
+            facingRight = false;
+            direction--;
+        }
+        else if(Greenfoot.isKeyDown("d")){
+            facingRight = true;
+            direction++;
+        }
         else if(Greenfoot.mouseClicked(null)){
-            if(swingCD.millisElapsed() > 500){
+            if(swingCD.millisElapsed() > 500 && idle == true){
                 swingCD.mark();
                 swingSword();
             }
@@ -66,9 +82,6 @@ public class Player extends Actor
             idle = true;
         }
         move(direction * 5);
-        if(direction >= 0) facingRight = true;
-        else facingRight = false;
-        animateKnight();
     }
     int imageIndex = 0;
     /**
@@ -93,7 +106,7 @@ public class Player extends Actor
                 setImage(runLeft[imageIndex]);
             }
         }
-        imageIndex = (imageIndex + 1) % idleRight.length;
+        imageIndex = (imageIndex + 1) % idleRight.length; // sets the image to the next one
     }
     
     /**
@@ -105,6 +118,7 @@ public class Player extends Actor
     private int animationSpeed = 75; // Adjust this value based on your desired animation speed
     
     public void swingSword() {
+        System.out.println("Sword Swung");
         if (attackTimer.millisElapsed() > animationSpeed) {
             attackTimer.mark();
             if (facingRight) {
