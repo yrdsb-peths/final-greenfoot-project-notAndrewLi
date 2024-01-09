@@ -16,7 +16,7 @@ public class MyWorld extends World
     SimpleTimer spawnTimer = new SimpleTimer();
     public MyWorld()
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+        // Create a new world with 1000x400 cells with a cell size of 1x1 pixels.
         super(1000, 400, 1);
         Player knight = new Player();
         addObject(knight,200,300);

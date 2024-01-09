@@ -78,10 +78,28 @@ public class Player extends Actor
                 swingSword();
             }
         }
+        else if(Greenfoot.isKeyDown("w")){
+            jump();
+        }
         else{
             idle = true;
         }
         move(direction * 5);
+    }
+    boolean grounded = true;
+    int jumpHeight = 200;
+    int jumpSpeed = 3;
+    int gravitySpeed = 30;
+    public void jump(){
+        if(grounded == true){
+            grounded = false;
+            while(getY() < getY() - jumpHeight){
+                setLocation(getX(), getY() - jumpSpeed);
+            }
+            setLocation(getX(), 300 - jumpHeight);
+        }
+    }
+    public void fall(){
     }
     int imageIndex = 0;
     /**
