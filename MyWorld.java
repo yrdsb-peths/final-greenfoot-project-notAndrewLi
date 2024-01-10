@@ -30,9 +30,9 @@ public class MyWorld extends World
         Enemy1 enemy = new Enemy1(x);
         addObject(enemy,x,y);
     }
-    
+    int spawnRate = 5000; //change based on how many enemies you want
     public void act(){
-        if(spawnTimer.millisElapsed() > 9000){
+        if(spawnTimer.millisElapsed() > spawnRate){
             sideSpawn();
             spawnTimer.mark();
         }

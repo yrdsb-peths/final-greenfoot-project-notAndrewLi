@@ -51,7 +51,6 @@ public class Player extends Actor
         animationTimer.mark();
         setImage(idleRight[0]);
     }
-    SimpleTimer swingCD = new SimpleTimer();
     /**
      * The loop that runs repeatedly while the game has started
      */
@@ -73,10 +72,8 @@ public class Player extends Actor
         // you can remove the check for idle here and call swingSword directly.
         swingSword();
         }
-        if(!isAttacking){
-            checkKeys();
-            animateKnight();
-        }
+        checkKeys();
+        animateKnight();
     }
     /**
      * Checks which key has been pressed
@@ -85,10 +82,10 @@ public class Player extends Actor
         idle = false;
         int direction = 0;
         if(Greenfoot.mouseClicked(null)){
-            if(swingCD.millisElapsed() > 500){
-                swingCD.mark();
-                swingSword();
-            }
+            swingSword();
+        }
+        else if(Greenfoot.isKeyDown("w")&& isGrounded){
+            jump();
         }
         else if(Greenfoot.isKeyDown("a")){
             facingRight = false;
@@ -97,10 +94,6 @@ public class Player extends Actor
         else if(Greenfoot.isKeyDown("d")){
             facingRight = true;
             direction++;
-        }
-        
-        else if(Greenfoot.isKeyDown("w")){
-            jump();
         }
         else{
             idle = true;
@@ -143,11 +136,14 @@ public class Player extends Actor
      * plays depending on the direction the player is facing.
      */
     SimpleTimer attackTimer = new SimpleTimer();
+    SimpleTimer swordCD = new SimpleTimer();
     private int currentFrame = 0;
     
     public void swingSword() {
-        if(isAttacking = false){
+        if(isAttacking = false && swordCD.millisElapsed() > 1000){
+            System.out.println("Sword Swung");
             isAttacking = true;
+            swordCD.mark();
             currentFrame = 0;
             if (attackTimer.millisElapsed() > animationSpeed) {
                 attackTimer.mark();
@@ -159,7 +155,7 @@ public class Player extends Actor
                     currentFrame = (currentFrame + 1) % swingLeft.length;
                 }
             }
-            isAttacking = false;
         }
+        isAttacking = false;
     }
 }
