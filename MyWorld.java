@@ -17,16 +17,16 @@ public class MyWorld extends World
     public MyWorld()
     {    
         // Create a new world with 1000x400 cells with a cell size of 1x1 pixels.
-        super(1000, 400, 1);
+        super(1000, 600, 1);
         Player knight = new Player();
-        addObject(knight,200,330);
+        addObject(knight,200,getHeight() - 70);
     }
     /**
      * Spawns enemies from either side
      */
     public void sideSpawn(){
         int x = Greenfoot.getRandomNumber(this.getWidth());
-        int y = 350;
+        int y = getHeight() - 50;
         Enemy1 enemy = new Enemy1(x);
         addObject(enemy,x,y);
     }

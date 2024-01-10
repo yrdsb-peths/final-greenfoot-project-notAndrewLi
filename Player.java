@@ -55,22 +55,28 @@ public class Player extends Actor
     /**
      * The loop that runs repeatedly while the game has started
      */
+    private boolean isGrounded = true;
+    private boolean isAttacking = false;
     public void act()
     {
         // Add your action code here.
-        setLocation(getX(), getY() - gravity);
-        if(getY() > 330){
-            setLocation(getX(), 330);
-
-        }
         gravity--;
+        setLocation(getX(), getY() - gravity);
+        if(getY() > this.getWorld().getHeight() - 75){
+            setLocation(getX(), this.getWorld().getHeight() - 75);
+            isGrounded = true;
+        } else{
+            isGrounded = false;
+        }
         if (Greenfoot.mouseClicked(null)) {
         // swing the sword continuously while the mouse button is held down, 
         // you can remove the check for idle here and call swingSword directly.
         swingSword();
         }
-        checkKeys();
-        animateKnight();
+        if(!isAttacking){
+            checkKeys();
+            animateKnight();
+        }
     }
     /**
      * Checks which key has been pressed
@@ -102,8 +108,9 @@ public class Player extends Actor
         move(direction * 5);
     }
     public void jump(){
-        System.out.println("jumping!");
-        gravity = 20;
+        if(isGrounded){
+            gravity = 20;
+        }
     }
     int imageIndex = 0;
     /**
@@ -139,16 +146,20 @@ public class Player extends Actor
     private int currentFrame = 0;
     
     public void swingSword() {
-        currentFrame = 0;
-        if (attackTimer.millisElapsed() > animationSpeed) {
-            attackTimer.mark();
-            if (facingRight) {
-                setImage(swingRight[currentFrame]);
-                currentFrame = (currentFrame + 1) % swingRight.length;
-            } else {
-                setImage(swingLeft[currentFrame]);
-                currentFrame = (currentFrame + 1) % swingLeft.length;
+        if(isAttacking = false){
+            isAttacking = true;
+            currentFrame = 0;
+            if (attackTimer.millisElapsed() > animationSpeed) {
+                attackTimer.mark();
+                if (facingRight) {
+                    setImage(swingRight[currentFrame]);
+                    currentFrame = (currentFrame + 1) % swingRight.length;
+                } else {
+                    setImage(swingLeft[currentFrame]);
+                    currentFrame = (currentFrame + 1) % swingLeft.length;
+                }
             }
+            isAttacking = false;
         }
     }
 }
