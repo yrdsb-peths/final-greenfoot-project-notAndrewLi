@@ -20,7 +20,10 @@ public class Player extends Actor
     GreenfootImage[] swingRight = new GreenfootImage[4];
     boolean facingRight = true;
     boolean idle = true;
+    private int gravity;
     SimpleTimer animationTimer = new SimpleTimer();
+    private int animationSpeed = 75; // Adjust this value based on your desired animation speed
+
     /**
      * Makes a left and right facing knight and animations
      * depending on which way the player is facing.
@@ -52,11 +55,28 @@ public class Player extends Actor
     /**
      * The loop that runs repeatedly while the game has started
      */
+    private boolean isGrounded = true;
+    private boolean isAttacking = false;
     public void act()
     {
         // Add your action code here.
-        checkKeys();
-        animateKnight();
+        gravity--;
+        setLocation(getX(), getY() - gravity);
+        if(getY() > this.getWorld().getHeight() - 75){
+            setLocation(getX(), this.getWorld().getHeight() - 75);
+            isGrounded = true;
+        } else{
+            isGrounded = false;
+        }
+        if (Greenfoot.mouseClicked(null)) {
+        // swing the sword continuously while the mouse button is held down, 
+        // you can remove the check for idle here and call swingSword directly.
+        swingSword();
+        }
+        if(!isAttacking){
+            checkKeys();
+            animateKnight();
+        }
     }
     /**
      * Checks which key has been pressed
@@ -64,7 +84,13 @@ public class Player extends Actor
     public void checkKeys(){
         idle = false;
         int direction = 0;
-        if(Greenfoot.isKeyDown("a")){
+        if(Greenfoot.mouseClicked(null)){
+            if(swingCD.millisElapsed() > 500){
+                swingCD.mark();
+                swingSword();
+            }
+        }
+        else if(Greenfoot.isKeyDown("a")){
             facingRight = false;
             direction--;
         }
@@ -72,16 +98,19 @@ public class Player extends Actor
             facingRight = true;
             direction++;
         }
-        else if(Greenfoot.mouseClicked(null)){
-            if(swingCD.millisElapsed() > 500 && idle == true){
-                swingCD.mark();
-                swingSword();
-            }
+        
+        else if(Greenfoot.isKeyDown("w")){
+            jump();
         }
         else{
             idle = true;
         }
         move(direction * 5);
+    }
+    public void jump(){
+        if(isGrounded){
+            gravity = 20;
+        }
     }
     int imageIndex = 0;
     /**
@@ -89,7 +118,7 @@ public class Player extends Actor
      * 100 milliseconds
      */
     public void animateKnight(){
-        if(animationTimer.millisElapsed() < 100){
+        if(animationTimer.millisElapsed() < animationSpeed){
             return;
         }
         animationTimer.mark();
@@ -115,19 +144,22 @@ public class Player extends Actor
      */
     SimpleTimer attackTimer = new SimpleTimer();
     private int currentFrame = 0;
-    private int animationSpeed = 75; // Adjust this value based on your desired animation speed
     
     public void swingSword() {
-        System.out.println("Sword Swung");
-        if (attackTimer.millisElapsed() > animationSpeed) {
-            attackTimer.mark();
-            if (facingRight) {
-                setImage(swingRight[currentFrame]);
-                currentFrame = (currentFrame + 1) % swingRight.length;
-            } else {
-                setImage(swingLeft[currentFrame]);
-                currentFrame = (currentFrame + 1) % swingLeft.length;
+        if(isAttacking = false){
+            isAttacking = true;
+            currentFrame = 0;
+            if (attackTimer.millisElapsed() > animationSpeed) {
+                attackTimer.mark();
+                if (facingRight) {
+                    setImage(swingRight[currentFrame]);
+                    currentFrame = (currentFrame + 1) % swingRight.length;
+                } else {
+                    setImage(swingLeft[currentFrame]);
+                    currentFrame = (currentFrame + 1) % swingLeft.length;
+                }
             }
+            isAttacking = false;
         }
     }
 }
