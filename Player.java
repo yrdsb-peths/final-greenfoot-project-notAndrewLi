@@ -158,8 +158,8 @@ public class Player extends Actor
         dashCD.mark();
         DashEffect dashEffect = new DashEffect();
         if(facingRight){
-            getWorld().addObject(dashEffect, getX() - 20, getY());
             dashEffect.getImage().mirrorHorizontally();
+            getWorld().addObject(dashEffect, getX() - 20, getY());
         } else{
             getWorld().addObject(dashEffect, getX() + 20, getY());
         }    

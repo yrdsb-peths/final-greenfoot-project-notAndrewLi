@@ -13,13 +13,15 @@ public class DashEffect extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     GreenfootImage effect = new GreenfootImage("images/dash.png");
+    public DashEffect(){
+        this.setImage(effect);
+        effect.scale(100,100);
+    }
     public void act()
     {
         // Add your action code here
-        GreenfootImage image = this.getImage();
-        image.scale(100,100);
-        image.setTransparency(image.getTransparency() - 5);
-        if(image.getTransparency() < 10){
+        effect.setTransparency(effect.getTransparency() - 5);
+        if(effect.getTransparency() < 10){
             getWorld().removeObject(this);
         }
     }
