@@ -1,4 +1,6 @@
 #Greenfoot project file
+class.DashEffect.image=dash.png
+class.Enemy1.image=Enemy1.png
 dependency1.from=MyWorld
 dependency1.to=SimpleTimer
 dependency1.type=UsesDependency
@@ -11,6 +13,24 @@ dependency3.type=UsesDependency
 dependency4.from=Player
 dependency4.to=SimpleTimer
 dependency4.type=UsesDependency
+<<<<<<< HEAD
+dependency5.from=Player
+dependency5.to=DashEffect
+dependency5.type=UsesDependency
+dependency6.from=Enemy1
+dependency6.to=SimpleTimer
+dependency6.type=UsesDependency
+dependency7.from=Enemy1
+dependency7.to=MyWorld
+dependency7.type=UsesDependency
+editor.fx.0.height=739
+editor.fx.0.width=816
+editor.fx.0.x=708
+editor.fx.0.y=194
+height=1056
+package.numDependencies=7
+package.numTargets=7
+=======
 dependency5.from=Enemy1
 dependency5.to=SimpleTimer
 dependency5.type=UsesDependency
@@ -23,7 +43,12 @@ editor.fx.0.x=0
 editor.fx.0.y=0
 height=925
 package.numDependencies=6
+<<<<<<< HEAD
 package.numTargets=5
+=======
+package.numTargets=4
+>>>>>>> ab7e0c0638e16ad1772ed5ed7336f0a40becfadc
+>>>>>>> 2d1f1708e10ecc1e569d242017698746c399a795
 project.charset=windows-1252
 publish.hasSource=false
 publish.locked=true
@@ -60,6 +85,40 @@ target3.width=120
 target3.x=0
 target3.y=0
 target4.height=70
+<<<<<<< HEAD
+target4.name=SmoothMover
+target4.showInterface=false
+target4.type=AbstractTarget
+target4.width=120
+target4.x=0
+target4.y=0
+target5.height=70
+target5.name=DashEffect
+target5.showInterface=false
+target5.type=ClassTarget
+target5.width=120
+target5.x=0
+target5.y=0
+target6.height=70
+target6.name=MyWorld
+target6.showInterface=false
+target6.type=ClassTarget
+target6.width=120
+target6.x=0
+target6.y=0
+target7.height=70
+target7.name=TitleScreen
+target7.showInterface=false
+target7.type=ClassTarget
+target7.width=120
+target7.x=0
+target7.y=0
+version=3.0.0
+width=1936
+world.lastInstantiated=MyWorld
+xPosition=-8
+yPosition=-8
+=======
 target4.name=MyWorld
 target4.showInterface=false
 target4.type=ClassTarget
@@ -78,3 +137,4 @@ width=1381
 world.lastInstantiated=MyWorld
 xPosition=0
 yPosition=0
+>>>>>>> ab7e0c0638e16ad1772ed5ed7336f0a40becfadc

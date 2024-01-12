@@ -23,6 +23,8 @@ public class Player extends Actor
     private int gravity;
     SimpleTimer animationTimer = new SimpleTimer();
     private int animationSpeed = 75; // Adjust this value based on your desired animation speed
+    SimpleTimer dashCD = new SimpleTimer();
+    SimpleTimer attackTimer = new SimpleTimer();
 
     /**
      * Makes a left and right facing knight and animations
@@ -48,7 +50,9 @@ public class Player extends Actor
             swingLeft[i].mirrorHorizontally();
             swingLeft[i].scale(150, 150);
         }
+        attackTimer.mark();
         animationTimer.mark();
+        dashCD.mark();
         setImage(idleRight[0]);
     }
     /**
@@ -59,8 +63,17 @@ public class Player extends Actor
     public void act()
     {
         // Add your action code here.
+        System.out.println(isAttacking);
         gravity--;
         setLocation(getX(), getY() - gravity);
+        if(slide > 0){
+            slide-=2;
+        }
+        if(facingRight){
+            setLocation(getX() + slide, getY());
+        }else{
+            setLocation(getX() - slide, getY());
+        }
         if(getY() > this.getWorld().getHeight() - 75){
             setLocation(getX(), this.getWorld().getHeight() - 75);
             isGrounded = true;
@@ -86,6 +99,9 @@ public class Player extends Actor
         }
         else if(Greenfoot.isKeyDown("w")&& isGrounded){
             jump();
+        }
+        else if(Greenfoot.isKeyDown("q")){
+            dash();
         }
         else if(Greenfoot.isKeyDown("a")){
             facingRight = false;
@@ -131,19 +147,35 @@ public class Player extends Actor
         imageIndex = (imageIndex + 1) % idleRight.length; // sets the image to the next one
     }
     
+    private int slide = 0;
+    /**
+     * a horizontal dash to increase the players mobility
+     */
+    private void dash(){
+        if(dashCD.millisElapsed() < 500){
+            return;
+        }
+        dashCD.mark();
+        DashEffect dashEffect = new DashEffect();
+        if(facingRight){
+            getWorld().addObject(dashEffect, getX() - 20, getY());
+            dashEffect.getImage().mirrorHorizontally();
+        } else{
+            getWorld().addObject(dashEffect, getX() + 20, getY());
+        }    
+        slide = 30;
+    }
+    
     /**
      * The Player's animation to swing their sword, a different animation 
      * plays depending on the direction the player is facing.
      */
-    SimpleTimer attackTimer = new SimpleTimer();
-    SimpleTimer swordCD = new SimpleTimer();
     private int currentFrame = 0;
     
     public void swingSword() {
-        if(isAttacking = false && swordCD.millisElapsed() > 1000){
+        if(isAttacking = false){
             System.out.println("Sword Swung");
             isAttacking = true;
-            swordCD.mark();
             currentFrame = 0;
             if (attackTimer.millisElapsed() > animationSpeed) {
                 attackTimer.mark();
