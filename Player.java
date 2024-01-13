@@ -152,18 +152,18 @@ public class Player extends Actor
      * a horizontal dash to increase the players mobility
      */
     private void dash(){
-        if(dashCD.millisElapsed() < 500){
+        if(dashCD.millisElapsed() < 2000){
             return;
         }
         dashCD.mark();
         DashEffect dashEffect = new DashEffect();
         if(facingRight){
             dashEffect.getImage().mirrorHorizontally();
-            getWorld().addObject(dashEffect, getX() - 20, getY());
+            getWorld().addObject(dashEffect, getX() - 100, getY());
         } else{
-            getWorld().addObject(dashEffect, getX() + 20, getY());
+            getWorld().addObject(dashEffect, getX() + 100, getY());
         }    
-        slide = 30;
+        slide = 40;
     }
     
     /**

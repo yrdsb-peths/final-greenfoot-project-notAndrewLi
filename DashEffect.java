@@ -15,12 +15,11 @@ public class DashEffect extends Actor
     GreenfootImage effect = new GreenfootImage("images/dash.png");
     public DashEffect(){
         this.setImage(effect);
-        effect.scale(100,100);
     }
     public void act()
     {
         // Add your action code here
-        effect.setTransparency(effect.getTransparency() - 5);
+        effect.setTransparency(effect.getTransparency() - 10);
         if(effect.getTransparency() < 10){
             getWorld().removeObject(this);
         }
