@@ -25,7 +25,6 @@ public class Player extends Actor
     SimpleTimer animationTimer = new SimpleTimer();
     private int animationSpeed = 75; // Adjust this value based on your desired animation speed
     SimpleTimer dashCD = new SimpleTimer();
-    SimpleTimer attackTimer = new SimpleTimer();
 
     /**
      * Makes a left and right facing knight and animations
@@ -51,9 +50,6 @@ public class Player extends Actor
             swingLeft[i].mirrorHorizontally();
             swingLeft[i].scale(150, 150);
         }
-        attackTimer.mark();
-        animationTimer.mark();
-        dashCD.mark();
         setImage(idleRight[0]);
     }
     /**
@@ -76,21 +72,25 @@ public class Player extends Actor
         if(getY() > this.getWorld().getHeight() - 75){
             setLocation(getX(), this.getWorld().getHeight() - 75);
             isGrounded = true;
+            canDoubleJump = true;
         } else{
             isGrounded = false;
         }
         checkKeys();
         animateKnight();
     }
+    boolean jumping = false;
+    boolean canDoubleJump = true;
     /**
      * Checks which key has been pressed
      */
     public void checkKeys(){
         idle = false;
         int direction = 0;
-        if((Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("space")) && isGrounded){
+        if(Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("space")){
             jump();
-        }
+            jumping = true; // the jump button is held, dont allow them to double jump or jump again
+        } else jumping = false;
         if(Greenfoot.mouseClicked(null) && isSwinging == false){//detects for left click
             System.out.println("Swinging");
             swingIndex = 0;
@@ -117,8 +117,10 @@ public class Player extends Actor
      * in the act method, the location will be subtracted 20, causing the actor to go up
      */
     public void jump(){
-        if(isGrounded){
-            gravity = 20;
+        if(!jumping && isGrounded) gravity = 20;
+        if(!jumping && !isGrounded && canDoubleJump){
+            gravity = 15;
+            canDoubleJump = false;
         }
     }
     int imageIndex = 0;
