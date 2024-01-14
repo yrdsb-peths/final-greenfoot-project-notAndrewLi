@@ -93,6 +93,7 @@ public class Player extends Actor
         }
         if(Greenfoot.mouseClicked(null) && isSwinging == false){//detects for left click
             System.out.println("Swinging");
+            swingIndex = 0;
             isSwinging = true;
         }
         if(Greenfoot.isKeyDown("q")){
@@ -121,9 +122,10 @@ public class Player extends Actor
         }
     }
     int imageIndex = 0;
+    int swingIndex = 0;
     /**
      * Animates the knight by setting the actor to a new image every 
-     * 100 milliseconds
+     * 75 milliseconds
      */
     public void animateKnight(){
         if(animationTimer.millisElapsed() < animationSpeed) return;
@@ -135,10 +137,16 @@ public class Player extends Actor
             if(facingRight) setImage(runRight[imageIndex]);
             else setImage(runLeft[imageIndex]);
         }
-        if(isSwinging){
-            if(facingRight) setImage(swingRight[imageIndex]);
-            else setImage(swingLeft[imageIndex]);
-            if(imageIndex == 3) isSwinging = false;
+        if(isSwinging){ //if the player clicks their mouse, it plays these frames instead of the running frams to animate the swinging
+            if(facingRight) setImage(swingRight[swingIndex]);
+            else setImage(swingLeft[swingIndex]);
+            if(swingIndex == 3){
+                isSwinging = false;
+                getWorld().removeObject(getOneIntersectingObject(Enemy1.class));
+            }
+            else{
+                swingIndex = (swingIndex + 1) % 4;
+            }
         }
         imageIndex = (imageIndex + 1) % 4; // sets the image to the next one
     }
@@ -158,28 +166,5 @@ public class Player extends Actor
             getWorld().addObject(dashEffect, getX() + 100, getY());
         }    
         slide = 40;
-    }
-    
-    /**
-     * The Player's animation to swing their sword, a different animation 
-     * plays depending on the direction the player is facing.
-     */
-    private int currentFrame = 0;
-    
-    public void swingSword() {
-        System.out.println("procked");
-        currentFrame = 0;
-        if (attackTimer.millisElapsed() > animationSpeed) {
-            System.out.println("removingObject");
-            attackTimer.mark();
-            if (facingRight) {
-                setImage(swingRight[currentFrame]);
-                currentFrame = (currentFrame + 1) % swingRight.length;
-            } else {
-                setImage(swingLeft[currentFrame]);
-                currentFrame = (currentFrame + 1) % swingLeft.length;
-            }
-        }
-        getWorld().removeObject(getOneIntersectingObject(Enemy1.class));
     }
 }
