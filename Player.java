@@ -20,6 +20,7 @@ public class Player extends Actor
     GreenfootImage[] swingRight = new GreenfootImage[4];
     boolean facingRight = true;
     boolean idle = true;
+    boolean isSwinging = false;
     private int gravity;
     SimpleTimer animationTimer = new SimpleTimer();
     private int animationSpeed = 75; // Adjust this value based on your desired animation speed
@@ -59,11 +60,9 @@ public class Player extends Actor
      * The loop that runs repeatedly while the game has started
      */
     private boolean isGrounded = true;
-    private boolean isAttacking = false;
     public void act()
     {
         // Add your action code here.
-        System.out.println(isAttacking);
         gravity--;
         setLocation(getX(), getY() - gravity);
         if(slide > 0){
@@ -80,11 +79,6 @@ public class Player extends Actor
         } else{
             isGrounded = false;
         }
-        if (Greenfoot.mouseClicked(null)) {
-        // swing the sword continuously while the mouse button is held down, 
-        // you can remove the check for idle here and call swingSword directly.
-        swingSword();
-        }
         checkKeys();
         animateKnight();
     }
@@ -94,16 +88,17 @@ public class Player extends Actor
     public void checkKeys(){
         idle = false;
         int direction = 0;
-        if(Greenfoot.mouseClicked(null)){
-            swingSword();
-        }
-        else if(Greenfoot.isKeyDown("w")&& isGrounded){
+        if((Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("space")) && isGrounded){
             jump();
         }
-        else if(Greenfoot.isKeyDown("q")){
+        if(Greenfoot.mouseClicked(null) && isSwinging == false){//detects for left click
+            System.out.println("Swinging");
+            isSwinging = true;
+        }
+        if(Greenfoot.isKeyDown("q")){
             dash();
         }
-        else if(Greenfoot.isKeyDown("a")){
+        if(Greenfoot.isKeyDown("a")){
             facingRight = false;
             direction--;
         }
@@ -116,6 +111,10 @@ public class Player extends Actor
         }
         move(direction * 5);
     }
+    /**
+     * Sets the gravity to 20
+     * in the act method, the location will be subtracted 20, causing the actor to go up
+     */
     public void jump(){
         if(isGrounded){
             gravity = 20;
@@ -127,24 +126,21 @@ public class Player extends Actor
      * 100 milliseconds
      */
     public void animateKnight(){
-        if(animationTimer.millisElapsed() < animationSpeed){
-            return;
-        }
+        if(animationTimer.millisElapsed() < animationSpeed) return;
         animationTimer.mark();
         if(idle){
-            if(facingRight){
-                setImage(idleRight[imageIndex]);
-            } else {
-                setImage(idleLeft[imageIndex]);
-            }
+            if(facingRight) setImage(idleRight[imageIndex]); 
+            else setImage(idleLeft[imageIndex]);
         }else{
-            if(facingRight){
-                setImage(runRight[imageIndex]);
-            } else {
-                setImage(runLeft[imageIndex]);
-            }
+            if(facingRight) setImage(runRight[imageIndex]);
+            else setImage(runLeft[imageIndex]);
         }
-        imageIndex = (imageIndex + 1) % idleRight.length; // sets the image to the next one
+        if(isSwinging){
+            if(facingRight) setImage(swingRight[imageIndex]);
+            else setImage(swingLeft[imageIndex]);
+            if(imageIndex == 3) isSwinging = false;
+        }
+        imageIndex = (imageIndex + 1) % 4; // sets the image to the next one
     }
     
     private int slide = 0;
@@ -152,9 +148,7 @@ public class Player extends Actor
      * a horizontal dash to increase the players mobility
      */
     private void dash(){
-        if(dashCD.millisElapsed() < 2000){
-            return;
-        }
+        if(dashCD.millisElapsed() < 2000) return;
         dashCD.mark();
         DashEffect dashEffect = new DashEffect();
         if(facingRight){
@@ -173,21 +167,19 @@ public class Player extends Actor
     private int currentFrame = 0;
     
     public void swingSword() {
-        if(isAttacking = false){
-            System.out.println("Sword Swung");
-            isAttacking = true;
-            currentFrame = 0;
-            if (attackTimer.millisElapsed() > animationSpeed) {
-                attackTimer.mark();
-                if (facingRight) {
-                    setImage(swingRight[currentFrame]);
-                    currentFrame = (currentFrame + 1) % swingRight.length;
-                } else {
-                    setImage(swingLeft[currentFrame]);
-                    currentFrame = (currentFrame + 1) % swingLeft.length;
-                }
+        System.out.println("procked");
+        currentFrame = 0;
+        if (attackTimer.millisElapsed() > animationSpeed) {
+            System.out.println("removingObject");
+            attackTimer.mark();
+            if (facingRight) {
+                setImage(swingRight[currentFrame]);
+                currentFrame = (currentFrame + 1) % swingRight.length;
+            } else {
+                setImage(swingLeft[currentFrame]);
+                currentFrame = (currentFrame + 1) % swingLeft.length;
             }
         }
-        isAttacking = false;
+        getWorld().removeObject(getOneIntersectingObject(Enemy1.class));
     }
 }
