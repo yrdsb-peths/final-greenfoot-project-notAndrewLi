@@ -15,14 +15,26 @@ public class MyWorld extends World
      */
     SimpleTimer spawnTimer = new SimpleTimer();
     GreenfootImage bg = new GreenfootImage("images/bg.png");
+    Label scoreLabel;
+    public int lives = 3;
+    public GreenfootImage[] hearts = new GreenfootImage[lives];
+    public int score = 0;
+
     public MyWorld()
     {    
-        // Create a new world with 1000x400 cells with a cell size of 1x1 pixels.
+        // Create a new world with 1000x600 cells with a cell size of 1x1 pixels.
         super(1000, 600, 1);
         bg.scale(1000,600);
         setBackground(bg);
         Player knight = new Player();
         addObject(knight,200,getHeight() - 70);
+        scoreLabel = new Label(score,80);
+        addObject(scoreLabel,900,50);
+        for (int i = 0; i < lives; i++){
+            hearts[lives - 1 - i] = new GreenfootImage("images/heart.png");
+            hearts[lives - 1 - i].scale(50,50);
+            getBackground().drawImage(hearts[2-i], 50 + 70 * i, 50);
+        }
     }
     /**
      * Spawns enemies from either side
@@ -39,5 +51,10 @@ public class MyWorld extends World
             sideSpawn();
             spawnTimer.mark();
         }
+    }
+    
+    public void increaseScore(){
+        score++;
+        scoreLabel.setValue(score);
     }
 }

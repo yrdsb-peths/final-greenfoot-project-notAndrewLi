@@ -72,7 +72,9 @@ public class Enemy1 extends Actor
     public void despawn(){
         MyWorld world = (MyWorld) getWorld();
         if(getX() >= world.getWidth() * 0.99 || getX() <= 0){
+            System.out.println("despawning");
             world.removeObject(this);
+            world.hearts[0].setTransparency(0);
         }
     }
 }

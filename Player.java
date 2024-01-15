@@ -25,6 +25,8 @@ public class Player extends Actor
     SimpleTimer animationTimer = new SimpleTimer();
     private int animationSpeed = 75; // Adjust this value based on your desired animation speed
     SimpleTimer dashCD = new SimpleTimer();
+    
+
 
     /**
      * Makes a left and right facing knight and animations
@@ -92,7 +94,6 @@ public class Player extends Actor
             jumping = true; // the jump button is held, dont allow them to double jump or jump again
         } else jumping = false;
         if(Greenfoot.mouseClicked(null) && isSwinging == false){//detects for left click
-            System.out.println("Swinging");
             swingIndex = 0;
             isSwinging = true;
         }
@@ -144,7 +145,10 @@ public class Player extends Actor
             else setImage(swingLeft[swingIndex]);
             if(swingIndex == 3){
                 isSwinging = false;
-                getWorld().removeObject(getOneIntersectingObject(Enemy1.class));
+                if(isTouching(Enemy1.class)){
+                    getWorld().removeObject(getOneIntersectingObject(Enemy1.class));
+                    ((MyWorld)getWorld()).increaseScore();
+                }
             }
             else{
                 swingIndex = (swingIndex + 1) % 4;
@@ -152,7 +156,6 @@ public class Player extends Actor
         }
         imageIndex = (imageIndex + 1) % 4; // sets the image to the next one
     }
-    
     private int slide = 0;
     /**
      * a horizontal dash to increase the players mobility
@@ -169,4 +172,5 @@ public class Player extends Actor
         }    
         slide = 40;
     }
+    
 }
