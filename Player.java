@@ -25,8 +25,8 @@ public class Player extends Actor
     SimpleTimer animationTimer = new SimpleTimer();
     private int animationSpeed = 75; // Adjust this value based on your desired animation speed
     SimpleTimer dashCD = new SimpleTimer();
-    
-
+    GreenfootSound swordSound = new GreenfootSound("sounds/swordSound.mp3");
+    GreenfootSound jumpSound = new GreenfootSound("sounds/jump.mp3");
 
     /**
      * Makes a left and right facing knight and animations
@@ -96,6 +96,10 @@ public class Player extends Actor
         if(Greenfoot.mouseClicked(null) && isSwinging == false){//detects for left click
             swingIndex = 0;
             isSwinging = true;
+            if(swordSound.isPlaying()){
+                swordSound.stop();
+            }
+            swordSound.play();
         }
         if(Greenfoot.isKeyDown("q")){
             dash();
@@ -118,9 +122,13 @@ public class Player extends Actor
      * in the act method, the location will be subtracted 20, causing the actor to go up
      */
     public void jump(){
+        if(jumpSound.isPlaying()){
+            jumpSound.stop();
+        }
+        jumpSound.play();
         if(!jumping && isGrounded) gravity = 20;
         if(!jumping && !isGrounded && canDoubleJump){
-            gravity = 15;
+            gravity = 20;
             canDoubleJump = false;
         }
     }
@@ -170,7 +178,7 @@ public class Player extends Actor
         } else{
             getWorld().addObject(dashEffect, getX() + 100, getY());
         }    
-        slide = 40;
+        slide = 30;
     }
     
 }

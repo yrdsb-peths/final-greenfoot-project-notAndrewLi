@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class TitleScreen extends World
 {
     Label titleLabel = new Label("Knight-Guy", 100);
-    Label instructions = new Label("Press any button to Play", 30);
+    Label instructions = new Label("Press space to play", 30);
     Label tutorialLabel = new Label("Press 't' for tutorial", 30);
     GreenfootImage bg = new GreenfootImage("images/titleScreen.jpg");
     /**
@@ -37,7 +37,7 @@ public class TitleScreen extends World
         if(key != null){
             if(key == "t"){
                 Greenfoot.setWorld(new Tutorial());
-            }else{
+            }else if (key == "space"){
                 Greenfoot.setWorld(new MyWorld());
             }
         }
