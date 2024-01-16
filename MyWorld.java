@@ -17,7 +17,7 @@ public class MyWorld extends World
     GreenfootImage bg = new GreenfootImage("images/bg.png");
     Label scoreLabel;
     public int lives = 3;
-    public GreenfootImage[] hearts = new GreenfootImage[lives];
+    public Heart[] hearts = new Heart[lives];
     public int score = 0;
 
     public MyWorld()
@@ -30,10 +30,20 @@ public class MyWorld extends World
         addObject(knight,200,getHeight() - 70);
         scoreLabel = new Label(score,80);
         addObject(scoreLabel,900,50);
-        for (int i = 0; i < lives; i++){
-            hearts[lives - 1 - i] = new GreenfootImage("images/heart.png");
-            hearts[lives - 1 - i].scale(50,50);
-            getBackground().drawImage(hearts[2-i], 50 + 70 * i, 50);
+        for (int i = 0; i < lives; i++){ // add lives based on how many lives the player chose
+            hearts[i] = new Heart();
+            addObject(hearts[i], 50 + 70 * i, 50);
+        }
+    }
+    /**
+     * Removes a heart actor and subtracts a life
+     */
+    public void loseLife(){
+        if(lives > 0){
+            removeObject(hearts[lives - 1]);
+            lives--;
+        } else{
+            gameOver();
         }
     }
     /**
@@ -52,9 +62,21 @@ public class MyWorld extends World
             spawnTimer.mark();
         }
     }
-    
+    /**
+     * increases the score when the player kills an enemy
+     */
     public void increaseScore(){
         score++;
         scoreLabel.setValue(score);
+    }
+    /**
+     * a gameOver screen for when the player loses all their lives
+     */
+    GreenfootSound endSound = new GreenfootSound ("sounds/sadTrombone.mp3");
+    public void gameOver(){
+        Label gameOverLabel = new Label ("Game Over", 100);
+        addObject(gameOverLabel, 300, 200);
+        gameOverLabel.setFillColor(Color.RED);
+        endSound.play();
     }
 }
