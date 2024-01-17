@@ -54,9 +54,8 @@ public class Enemy2 extends Actor
 
     public void minusHp(){
         MyWorld world = (MyWorld) getWorld();
-
         hp--;
-        if(hp == 1){
+        if(hp < 1){
             world.removeObject(this);
         }
     }

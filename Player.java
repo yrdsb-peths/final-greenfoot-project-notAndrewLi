@@ -168,6 +168,9 @@ public class Player extends Actor
         }
         imageIndex = (imageIndex + 1) % 4; // sets the image to the next one
     }
+    private void fireBlast(){
+        
+    }
     private int slide = 0;
     /**
      * a horizontal dash to increase the players mobility
