@@ -54,16 +54,32 @@ public class MyWorld extends World
         int x = Greenfoot.getRandomNumber(this.getWidth() - 100);
         x += 50;//to ensure it doesn't spawn on the ends and instantly despawns
         int y = getHeight() - 50;
-        Enemy1 enemy = new Enemy1(x);
-        addObject(enemy,x,y);
+        Enemy1 octopus = new Enemy1(x);
+        addObject(octopus,x,y);
     }
     int spawnRate = 5000; //change based on how many enemies you want
+    boolean dragonSpawned = false;
     public void act(){
+        String key = Greenfoot.getKey();
+        if(score % 5 == 0 && score > 0 && !dragonSpawned){
+            System.out.println("Spawned");
+            int side = Greenfoot.getRandomNumber(2);
+            Enemy2 dragon = new Enemy2(side);
+            int x; 
+            if(side == 1) x = this.getWidth();
+            else x = 0;
+            System.out.println(x);
+
+            addObject(dragon,x,150);
+            dragonSpawned = true;
+        }
+        if(score % 5 != 0){
+            dragonSpawned = false;
+        }
         if(!gameOver && spawnTimer.millisElapsed() > spawnRate){
             sideSpawn();
             spawnTimer.mark();
         } else if (gameOver){
-            String key = Greenfoot.getKey();
             if(key == "space"){
                 Greenfoot.setWorld(new MyWorld());
             }
@@ -72,9 +88,12 @@ public class MyWorld extends World
     /**
      * increases the score when the player kills an enemy
      */
-    public void increaseScore(){
-        score++;
+    public void increaseScore(int x){
+        score += x;
         scoreLabel.setValue(score);
+        if(spawnRate >= 1000){
+            spawnRate -= 500;
+        }
     }
     /**
      * a gameOver screen for when the player loses all their lives

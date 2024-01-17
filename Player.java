@@ -155,7 +155,11 @@ public class Player extends Actor
                 isSwinging = false;
                 if(isTouching(Enemy1.class)){
                     getWorld().removeObject(getOneIntersectingObject(Enemy1.class));
-                    ((MyWorld)getWorld()).increaseScore();
+                    ((MyWorld)getWorld()).increaseScore(1);
+                }
+                if(isTouching(Enemy2.class)){
+                    Enemy2 enemy = (Enemy2) getOneIntersectingObject(Enemy2.class);
+                    enemy.minusHp();
                 }
             }
             else{

@@ -46,11 +46,8 @@ public class Enemy1 extends Actor
     public void act()
     {
         // Add your action code here.
-        if(movingRight){
-            move(3);
-        } else{
-            move(-3);
-        }
+        if(movingRight)move(3);
+        else move(-3);
         bob();
         despawn();
     }
