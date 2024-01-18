@@ -33,7 +33,6 @@ public class TitleScreen extends World
     public void act(){
         String key = null;
         key = Greenfoot.getKey();
-        System.out.println(key);
         if(key != null){
             if(key == "t"){
                 Greenfoot.setWorld(new Tutorial());
