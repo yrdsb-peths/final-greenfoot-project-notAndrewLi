@@ -31,6 +31,7 @@ public class TitleScreen extends World
      * the act loop detecting the correct button pressed
      */
     public void act(){
+<<<<<<< HEAD
         String key = null;
         key = Greenfoot.getKey();
         if(key != null){
@@ -39,6 +40,12 @@ public class TitleScreen extends World
             }else if (key == "space"){
                 Greenfoot.setWorld(new MyWorld());
             }
+=======
+        if(Greenfoot.isKeyDown("t")){
+            Greenfoot.setWorld(new Tutorial());
+        }else if (Greenfoot.isKeyDown("space")){
+            Greenfoot.setWorld(new MyWorld());
+>>>>>>> a89cbc09a6e24c3650f00462c7c4761c34427167
         }
     }
 }

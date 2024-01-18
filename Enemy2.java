@@ -32,10 +32,22 @@ public class Enemy2 extends Actor
     public void act()
     {
         // Add your action code here.
+        MyWorld world = (MyWorld) getWorld();
         fly();
+        if(facingRight){
+            if(getX() > 990){
+                despawnDragon();
+                world.loseLife();
+            }
+        }else{
+            if(getX() < 10){
+                despawnDragon();
+                world.loseLife();
+            }
+        }
     }
     int imageIdx = 0;
-    int speed = 8;
+    public int dragonSpeed = 20;
     public void fly(){
         if(animationTimer.millisElapsed() < animationSpeed){
             return;
@@ -43,11 +55,11 @@ public class Enemy2 extends Actor
         animationTimer.mark();
         if(facingRight){
             setImage(dragon[imageIdx]);
-            move(speed);
+            move(dragonSpeed);
         }
         else{
             setImage(dragonLeft[imageIdx]);
-            move(-speed);
+            move(-dragonSpeed);
         }
         imageIdx = (imageIdx+1) % 3;
     }
@@ -55,8 +67,15 @@ public class Enemy2 extends Actor
     public void minusHp(){
         MyWorld world = (MyWorld) getWorld();
         hp--;
+        System.out.println(hp);
         if(hp < 1){
-            world.removeObject(this);
+            world.increaseScore(3);
+            despawnDragon();
         }
+    }
+    
+    public void despawnDragon(){
+        MyWorld world = (MyWorld) getWorld();
+        world.removeObject(this);
     }
 }

@@ -21,13 +21,20 @@ public class Player extends Actor
     boolean facingRight = true;
     boolean idle = true;
     boolean isSwinging = false;
+    boolean canFireBlast = true;
+    boolean jumping = false;
+    boolean canDoubleJump = true;
+    boolean canDash = true;
+    private int slide = 0;
     private int gravity;
-    SimpleTimer animationTimer = new SimpleTimer();
+    int imageIndex = 0;
+    int swingIndex = 0;
     private int animationSpeed = 75; // Adjust this value based on your desired animation speed
+    SimpleTimer animationTimer = new SimpleTimer();
     SimpleTimer dashCD = new SimpleTimer();
     GreenfootSound swordSound = new GreenfootSound("sounds/swordSound.mp3");
     GreenfootSound jumpSound = new GreenfootSound("sounds/jump.mp3");
-
+    SimpleTimer fireBlastCD = new SimpleTimer();
     /**
      * Makes a left and right facing knight and animations
      * depending on which way the player is facing.
@@ -78,11 +85,18 @@ public class Player extends Actor
         } else{
             isGrounded = false;
         }
+        if(dashCD.millisElapsed() > 2000){//if it has been 2 seconds since the last dash, they may dash again
+            dashCD.mark();
+            canDash = true;
+        }
+        if(fireBlastCD.millisElapsed() > 5000){//if it has been 5 seconds since the last fireblast, they may fireblast again
+            fireBlastCD.mark();
+            canFireBlast = true;
+        }
         checkKeys();
         animateKnight();
     }
-    boolean jumping = false;
-    boolean canDoubleJump = true;
+
     /**
      * Checks which key has been pressed
      */
@@ -103,6 +117,11 @@ public class Player extends Actor
         }
         if(Greenfoot.isKeyDown("q")){
             dash();
+        }
+        if(Greenfoot.isKeyDown("e") && canFireBlast){
+            canFireBlast = false;
+            FireBlast fireBlast = new FireBlast();
+            getWorld().addObject(fireBlast, getX(), getY());
         }
         if(Greenfoot.isKeyDown("a")){
             facingRight = false;
@@ -132,8 +151,7 @@ public class Player extends Actor
             canDoubleJump = false;
         }
     }
-    int imageIndex = 0;
-    int swingIndex = 0;
+    
     /**
      * Animates the knight by setting the actor to a new image every 
      * 75 milliseconds
@@ -168,16 +186,12 @@ public class Player extends Actor
         }
         imageIndex = (imageIndex + 1) % 4; // sets the image to the next one
     }
-    private void fireBlast(){
-        
-    }
-    private int slide = 0;
     /**
      * a horizontal dash to increase the players mobility
      */
     private void dash(){
-        if(dashCD.millisElapsed() < 2000) return;
-        dashCD.mark();
+        if(!canDash) return;
+        canDash = false;
         DashEffect dashEffect = new DashEffect();
         if(facingRight){
             dashEffect.getImage().mirrorHorizontally();
@@ -187,5 +201,4 @@ public class Player extends Actor
         }    
         slide = 30;
     }
-    
 }
