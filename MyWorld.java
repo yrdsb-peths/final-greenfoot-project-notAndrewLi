@@ -62,15 +62,13 @@ public class MyWorld extends World
     public void act(){
         String key = Greenfoot.getKey();
         if(score % 5 == 0 && score > 0 && !dragonSpawned){
-            System.out.println("Spawned");
             int side = Greenfoot.getRandomNumber(2);
             Enemy2 dragon = new Enemy2(side);
             int x; 
             if(side == 1) x = this.getWidth();
             else x = 0;
-            System.out.println(x);
-
-            addObject(dragon,x,150);
+            int y = Greenfoot.getRandomNumber(100)+ 100;
+            addObject(dragon,x,y);
             dragonSpawned = true;
         }
         if(score % 5 != 0){
@@ -92,7 +90,7 @@ public class MyWorld extends World
         score += x;
         scoreLabel.setValue(score);
         if(spawnRate >= 1000){
-            spawnRate -= 500;
+            spawnRate -= 200;
         }
     }
     /**

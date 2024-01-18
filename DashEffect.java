@@ -14,7 +14,7 @@ public class DashEffect extends Actor
      */
     GreenfootImage effect = new GreenfootImage("images/dash.png");
     public DashEffect(){
-        this.setImage(effect);
+        setImage(effect);
     }
     public void act()
     {

@@ -17,7 +17,7 @@ public class Enemy1 extends Actor
     boolean movingRight = false;
     boolean facingRight = false;
     SimpleTimer bobbing = new SimpleTimer();
-    
+    public int octopusSpeed = 3;
     /**
      * creates the enemy and assigns which direction to face and move
      */
@@ -46,8 +46,8 @@ public class Enemy1 extends Actor
     public void act()
     {
         // Add your action code here.
-        if(movingRight)move(3);
-        else move(-3);
+        if(movingRight)move(octopusSpeed);
+        else move(-octopusSpeed);
         bob();
         despawn();
     }
@@ -70,7 +70,6 @@ public class Enemy1 extends Actor
     public void despawn(){
         MyWorld world = (MyWorld) getWorld();
         if(getX() >= world.getWidth() * 0.99 || getX() <= 0){
-            System.out.println("despawning");
             world.removeObject(this);
             world.loseLife();
         }
