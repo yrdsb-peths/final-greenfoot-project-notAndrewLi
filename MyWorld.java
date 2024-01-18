@@ -2,42 +2,59 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 
 /**
- * Write a description of class MyWorld here.
+ * The world where the game takes place.
+ * It includes player, enemies, score, lives, and handles game logic.
  * 
- * @author (your name) 
+ * @author (your name)
  * @version (a version number or a date)
  */
 public class MyWorld extends World
 {
 
-    /**
-     * Constructor for objects of class MyWorld.
-     * 
-     */
+    // Timer for enemy spawn
     SimpleTimer spawnTimer = new SimpleTimer();
+    
+    // Background image
     GreenfootImage bg = new GreenfootImage("images/bg.png");
+    
+    // Score display
     Label scoreLabel;
+    
+    // Player lives and score
     public int lives = 3;
     public Heart[] hearts = new Heart[lives];
     public int score = 0;
+    
+    // Flag indicating whether the game is over
     public boolean gameOver = false;
+    
+    /**
+     * Constructor for objects of class MyWorld.
+     */
     public MyWorld()
     {    
         // Create a new world with 1000x600 cells with a cell size of 1x1 pixels.
         super(1000, 600, 1);
         bg.scale(1000,600);
         setBackground(bg);
+        
+        // Add player
         Player knight = new Player();
         addObject(knight,200,getHeight() - 70);
+        
+        // Add score label
         scoreLabel = new Label(score,80);
         addObject(scoreLabel,900,50);
-        for (int i = 0; i < lives; i++){ // add lives based on how many lives the player chose
+        
+        // Add player lives
+        for (int i = 0; i < lives; i++){ 
             hearts[i] = new Heart();
             addObject(hearts[i], 50 + 70 * i, 50);
         }
     }
+    
     /**
-     * Removes a heart actor and subtracts a life
+     * Removes a heart actor and subtracts a life when player loses a life.
      */
     public void loseLife(){
         if(lives > 1){
@@ -47,20 +64,29 @@ public class MyWorld extends World
             gameOver();
         }
     }
+    
     /**
-     * Spawns enemies from either side
+     * Spawns enemies from either side.
      */
     public void sideSpawn(){
         int x = Greenfoot.getRandomNumber(this.getWidth() - 100);
-        x += 50;//to ensure it doesn't spawn on the ends and instantly despawns
+        x += 50; // To ensure it doesn't spawn on the ends and instantly despawns
         int y = getHeight() - 50;
         Enemy1 octopus = new Enemy1(x);
         addObject(octopus,x,y);
     }
-    int spawnRate = 5000; //change based on how many enemies you want
+    
+    // Change based on how many enemies you want
+    int spawnRate = 5000; 
     boolean dragonSpawned = false;
+    
+    /**
+     * Handles game logic.
+     */
     public void act(){
         String key = Greenfoot.getKey();
+        
+        // Spawn dragon after every 5 points and set spawn conditions
         if(score % 5 == 0 && score > 0 && !dragonSpawned){
             int side = Greenfoot.getRandomNumber(2);
             Enemy2 dragon = new Enemy2(side);
@@ -71,20 +97,26 @@ public class MyWorld extends World
             addObject(dragon,x,y);
             dragonSpawned = true;
         }
+        
+        // Reset dragonSpawned flag
         if(score % 5 != 0){
             dragonSpawned = false;
         }
+        
+        // Spawn enemies based on timer
         if(!gameOver && spawnTimer.millisElapsed() > spawnRate){
             sideSpawn();
             spawnTimer.mark();
         } else if (gameOver){
+            // Restart the game on space key press after game over
             if(key == "space"){
                 Greenfoot.setWorld(new MyWorld());
             }
         }
     }
+    
     /**
-     * increases the score when the player kills an enemy
+     * Increases the score when the player kills an enemy.
      */
     public void increaseScore(int x){
         score += x;
@@ -93,8 +125,9 @@ public class MyWorld extends World
             spawnRate -= 200;
         }
     }
+    
     /**
-     * a gameOver screen for when the player loses all their lives
+     * Displays a game over screen when the player loses all their lives.
      */
     GreenfootSound endSound = new GreenfootSound ("sounds/sadTrombone.mp3");
     public void gameOver(){
