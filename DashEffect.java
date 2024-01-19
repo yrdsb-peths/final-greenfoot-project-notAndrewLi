@@ -16,6 +16,9 @@ public class DashEffect extends Actor
     public DashEffect(){
         setImage(effect);
     }
+    /**
+     * rapidly makes the actor transparent, then removes the object
+     */
     public void act()
     {
         // Add your action code here

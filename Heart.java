@@ -3,8 +3,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Write a description of class Heart here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author (Andrew Li) 
+ * @version (Jan 18 2024)
  */
 public class Heart extends Actor
 {

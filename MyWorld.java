@@ -5,8 +5,8 @@ import java.util.List;
  * The world where the game takes place.
  * It includes player, enemies, score, lives, and handles game logic.
  * 
- * @author (your name)
- * @version (a version number or a date)
+ * @author (Andrew Li)
+ * @version (Jan 18 2024)
  */
 public class MyWorld extends World
 {

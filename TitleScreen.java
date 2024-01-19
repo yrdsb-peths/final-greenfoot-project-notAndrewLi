@@ -3,8 +3,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Write a description of class TitleScreen here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author (Andrew Li) 
+ * @version (Jan 18 2024)
  */
 public class TitleScreen extends World
 {
@@ -14,7 +14,7 @@ public class TitleScreen extends World
     GreenfootImage bg = new GreenfootImage("images/titleScreen.jpg");
     /**
      * Constructor for objects of class TitleScreen.
-     * Has a knight for the player to play around with
+     * Tells the player what to do
      */
     public TitleScreen()
     {    
@@ -22,6 +22,7 @@ public class TitleScreen extends World
         super(1000, 600, 1);
         bg.scale(1000,600);
         setBackground(bg);
+        //add labels to the title screen
         addObject(titleLabel, 500, 300);
         addObject(instructions, 500, 500);
         addObject(tutorialLabel, 500, 550);
@@ -29,17 +30,9 @@ public class TitleScreen extends World
     
     /**
      * the act loop detecting the correct button pressed
+     * t for tutorial, space for main game
      */
     public void act(){
-        String key = null;
-        key = Greenfoot.getKey();
-        if(key != null){
-            if(key == "t"){
-                Greenfoot.setWorld(new Tutorial());
-            }else if (key == "space"){
-                Greenfoot.setWorld(new MyWorld());
-            }
-        }
         if(Greenfoot.isKeyDown("t")){
             Greenfoot.setWorld(new Tutorial());
         }else if (Greenfoot.isKeyDown("space")){
